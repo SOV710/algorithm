@@ -39,6 +39,7 @@
 # CMake Ignore Rules
 # ==============================
 
+.cmake
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
