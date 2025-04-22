@@ -28,9 +28,9 @@ BinarySearchTree &BinarySearchTree::operator=(std::initializer_list<int> list) {
   return *this;
 }
 
-Node *BinarySearchTree::insertNode(Node *node, int key, Node *parent) {
+BSTNode *BinarySearchTree::insertNode(BSTNode *node, int key, BSTNode *parent) {
   if (node == nullptr) { // check value, if not exist, create it
-    Node *newNode = new Node(key);
+    BSTNode *newNode = new BSTNode(key);
     newNode->parent = parent;
     if (!root)
       root = newNode; // maintain the root
@@ -48,7 +48,7 @@ Node *BinarySearchTree::insertNode(Node *node, int key, Node *parent) {
   return node; // return parent node, recursively return root
 }
 
-Node *BinarySearchTree::searchNode(Node *node, int key) {
+BSTNode *BinarySearchTree::searchNode(BSTNode *node, int key) {
   if (node == nullptr || node->key == key) { // check value
     return node;
   }
@@ -58,8 +58,9 @@ Node *BinarySearchTree::searchNode(Node *node, int key) {
     return searchNode(node->right, key);
 }
 
-void BinarySearchTree::transplant(Node *u, Node *v) { // used to replace u with
-                                                      // v
+void BinarySearchTree::transplant(BSTNode *u,
+                                  BSTNode *v) { // used to replace u with
+                                                // v
   if (u->parent == nullptr)
     // if u is the root
     this->root = v;
@@ -74,7 +75,7 @@ void BinarySearchTree::transplant(Node *u, Node *v) { // used to replace u with
   }
 }
 
-Node *BinarySearchTree::deleteNode(Node *root, Node *node) {
+BSTNode *BinarySearchTree::deleteNode(BSTNode *root, BSTNode *node) {
   if (root == nullptr) // nothing to delete
     return root;
 
@@ -86,7 +87,7 @@ Node *BinarySearchTree::deleteNode(Node *root, Node *node) {
     transplant(node, node->left);
   else {
     // cases on node both have left and right child
-    Node *sec = minimumNode(node->right); // successor
+    BSTNode *sec = minimumNode(node->right); // successor
     if (sec->parent != node) {
       transplant(sec, sec->right);
       sec->right = node->right;
@@ -99,28 +100,28 @@ Node *BinarySearchTree::deleteNode(Node *root, Node *node) {
   return root;
 }
 
-Node *BinarySearchTree::minimumNode(Node *node) {
+BSTNode *BinarySearchTree::minimumNode(BSTNode *node) {
   while (node->left != nullptr)
     node = node->left;
   return node;
 }
 
-Node *BinarySearchTree::maximumNode(Node *node) {
+BSTNode *BinarySearchTree::maximumNode(BSTNode *node) {
   while (node->right != nullptr)
     node = node->right;
   return node;
 }
 
-Node *BinarySearchTree::successorNode(Node *node) {
+BSTNode *BinarySearchTree::successorNode(BSTNode *node) {
   if (node == nullptr)
     return nullptr;
 
   if (node->right != nullptr)
     return minimumNode(node->right);
 
-  Node *originNode = node; // prepared for nullptr protection
+  BSTNode *originNode = node; // prepared for nullptr protection
 
-  Node *parent = node->parent;
+  BSTNode *parent = node->parent;
   while (parent != nullptr && parent->right == node) {
     node = parent;
     parent = parent->parent;
@@ -130,9 +131,9 @@ Node *BinarySearchTree::successorNode(Node *node) {
   return parent;
 }
 
-Node *BinarySearchTree::rotateLeft(Node *z) {
-  Node *y = z->right;
-  Node *T2 = y->left;
+BSTNode *BinarySearchTree::rotateLeft(BSTNode *z) {
+  BSTNode *y = z->right;
+  BSTNode *T2 = y->left;
 
   // Perform rotation
   y->left = z;
@@ -151,9 +152,9 @@ Node *BinarySearchTree::rotateLeft(Node *z) {
   return y; // y becomes the new root of the subtree
 }
 
-Node *BinarySearchTree::rotateRight(Node *z) {
-  Node *y = z->left;
-  Node *T3 = y->right;
+BSTNode *BinarySearchTree::rotateRight(BSTNode *z) {
+  BSTNode *y = z->left;
+  BSTNode *T3 = y->right;
 
   // Perform rotation
   y->right = z;
@@ -172,42 +173,45 @@ Node *BinarySearchTree::rotateRight(Node *z) {
   return y; // y becomes the new root of the subtree
 }
 
-Node *BinarySearchTree::getRoot() { return root; }
+BSTNode *BinarySearchTree::getRoot() { return root; }
 
 void BinarySearchTree::insert(int key) {
   root = insertNode(root, key, nullptr);
 }
 
-Node *BinarySearchTree::search(int key) { return searchNode(root, key); }
+BSTNode *BinarySearchTree::search(int key) { return searchNode(root, key); }
 
 void BinarySearchTree::remove(int key) {
   deleteNode(root, searchNode(root, key));
 }
 
-Node *BinarySearchTree::minimum() { return minimumNode(root); }
+BSTNode *BinarySearchTree::minimum() { return minimumNode(root); }
 
-Node *BinarySearchTree::maximum() { return maximumNode(root); }
+BSTNode *BinarySearchTree::maximum() { return maximumNode(root); }
 
-Node *BinarySearchTree::successor(int key) {
-  Node *node = search(key);
+BSTNode *BinarySearchTree::successor(int key) {
+  BSTNode *node = search(key);
   return successorNode(node);
 }
 
-void BinarySearchTree::printWithoutPrefix(Node *node) {
+void BinarySearchTree::printWithoutPrefix(BSTNode *node) {
   printTree("", node, false);
 }
 
-void BinarySearchTree::printWithPrefix(const std::string &string, Node *node) {
+void BinarySearchTree::printWithPrefix(const std::string &string,
+                                       BSTNode *node) {
   printTree(string, node, false);
 }
 
-int BinarySearchTree::getHeight(Node *node) { return node ? node->height : 0; }
+int BinarySearchTree::getHeight(BSTNode *node) {
+  return node ? node->height : 0;
+}
 
-int BinarySearchTree::getBalance(Node *node) {
+int BinarySearchTree::getBalance(BSTNode *node) {
   return node ? getHeight(node->left) - getHeight(node->right) : 0;
 }
 
-void BinarySearchTree::updateHeight(Node *node) {
+void BinarySearchTree::updateHeight(BSTNode *node) {
   if (!node)
     return;
   node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
@@ -232,7 +236,7 @@ AVLTree &AVLTree::operator=(std::initializer_list<int> list) {
   return *this;
 }
 
-Node *AVLTree::balance(Node *node, int key) {
+BSTNode *AVLTree::balance(BSTNode *node, int key) {
   int balance = getBalance(node);
 
   // LL case： left tree is higher. and the insertion point is on the left side
@@ -265,9 +269,9 @@ Node *AVLTree::balance(Node *node, int key) {
   return node;
 }
 
-Node *AVLTree::insertNode(Node *node, int key, Node *parent) {
+BSTNode *AVLTree::insertNode(BSTNode *node, int key, BSTNode *parent) {
   if (node == nullptr) { // check value, if not exist, create it
-    Node *newNode = new Node(key);
+    BSTNode *newNode = new BSTNode(key);
     newNode->parent = parent;
     if (this->root == nullptr)
       this->root = newNode; // maintain the root
@@ -289,14 +293,15 @@ Node *AVLTree::insertNode(Node *node, int key, Node *parent) {
   return balance(node, key);
 }
 
-Node *AVLTree::deleteNode(Node *root, Node *node) {
+BSTNode *AVLTree::deleteNode(BSTNode *root, BSTNode *node) {
   if (node == nullptr) {
     // Node to be deleted not found, just return root
     return root;
   }
 
-  Node *parent = node->parent; // keep track of the parent for later rebalancing
-  Node *rebalanceStart = nullptr; // the node from which we start rebalancing
+  BSTNode *parent =
+      node->parent; // keep track of the parent for later rebalancing
+  BSTNode *rebalanceStart = nullptr; // the node from which we start rebalancing
 
   // Standard BST Deletion
   if (node->left == nullptr && node->right == nullptr) {
@@ -317,7 +322,7 @@ Node *AVLTree::deleteNode(Node *root, Node *node) {
     delete node;
   } else {
     // Two children
-    Node *sec = minimumNode(node->right); // successor
+    BSTNode *sec = minimumNode(node->right); // successor
     // We'll rebalance from successor or its parent after re-linking
     if (sec->parent != node) {
       // If successor is not the direct child of node
@@ -341,7 +346,7 @@ Node *AVLTree::deleteNode(Node *root, Node *node) {
   // Now rebalance the tree starting from rebalanceStart and moving upwards
   // If rebalanceStart is nullptr, use parent (this can happen if we deleted the
   // root)
-  Node *cur = (rebalanceStart) ? rebalanceStart : parent;
+  BSTNode *cur = (rebalanceStart) ? rebalanceStart : parent;
 
   while (cur != nullptr) {
     updateHeight(cur);
@@ -362,7 +367,7 @@ void AVLTree::insert(int key) {
   this->root = insertNode(this->root, key, nullptr);
 }
 
-Node *AVLTree::search(int key) { return searchNode(this->root, key); }
+BSTNode *AVLTree::search(int key) { return searchNode(this->root, key); }
 
 void AVLTree::remove(int key) {
   deleteNode(this->root, searchNode(this->root, key));

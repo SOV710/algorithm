@@ -20,7 +20,7 @@ void printArray(int arr[], int size) {
   printf("\n"); // 换行
 }
 
-void printTree(const std::string &prefix, Node *node, bool isLeft) {
+void printTree(const std::string &prefix, BSTNode *node, bool isLeft) {
   if (node == nullptr)
     return;
   else {

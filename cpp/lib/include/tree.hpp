@@ -14,20 +14,21 @@ namespace TREE {
 //                              Binary Search Trees //
 //-------------------------------------------------------------------------------//
 
-class BinarySearchTree {
+template <KeyComparble Key> class BinarySearchTree {
 protected:
-  Node *root;
+  using NodeT = BSTNode<Key>;
+  NodeT *root;
 
-  virtual Node *insertNode(Node *node, int key, Node *parent);
-  Node *searchNode(Node *node, int key);
-  void transplant(Node *u, Node *v);
-  virtual Node *deleteNode(Node *root, Node *node);
-  Node *minimumNode(Node *node);
-  Node *maximumNode(Node *node);
-  Node *successorNode(Node *node);
+  virtual NodeT *insertNode(NodeT *node, int key, NodeT *parent);
+  NodeT *searchNode(NodeT *node, int key);
+  void transplant(NodeT *u, NodeT *v);
+  virtual NodeT *deleteNode(NodeT *root, NodeT *node);
+  NodeT *minimumNode(NodeT *node);
+  NodeT *maximumNode(NodeT *node);
+  NodeT *successorNode(NodeT *node);
 
-  Node *rotateLeft(Node *z);
-  Node *rotateRight(Node *z);
+  NodeT *rotateLeft(NodeT *z);
+  NodeT *rotateRight(NodeT *z);
 
 public:
   virtual ~BinarySearchTree() = default;
@@ -37,31 +38,32 @@ public:
   BinarySearchTree(std::initializer_list<int> list);
   virtual BinarySearchTree &operator=(std::initializer_list<int> list);
 
-  Node *getRoot();
+  NodeT *getRoot();
   virtual void insert(int key);
-  virtual Node *search(int key);
+  virtual NodeT *search(int key);
   virtual void remove(int key);
-  Node *minimum();
-  Node *maximum();
-  Node *successor(int key);
-  void printWithoutPrefix(Node *node);
-  void printWithPrefix(const std::string &prefix, Node *node);
+  NodeT *minimum();
+  NodeT *maximum();
+  NodeT *successor(int key);
+  void printWithoutPrefix(NodeT *node);
+  void printWithPrefix(const std::string &prefix, NodeT *node);
 
-  int getHeight(Node *node);
-  int getBalance(Node *node);
-  void updateHeight(Node *node);
+  int getHeight(NodeT *node);
+  int getBalance(NodeT *node);
+  void updateHeight(NodeT *node);
 };
 
 //-------------------------------------------------------------------------------//
 //                                   AVL Trees //
 //-------------------------------------------------------------------------------//
 
-class AVLTree : public BinarySearchTree {
+template <KeyComparble Key> class AVLTree : public BinarySearchTree {
 protected:
-  Node *balance(Node *node, int key);
+  using NodeT = BSTNode<Key>;
+  NodeT *balance(NodeT *node, int key);
 
-  Node *insertNode(Node *node, int key, Node *parent) override;
-  Node *deleteNode(Node *root, Node *node) override;
+  NodeT *insertNode(NodeT *node, int key, NodeT *parent) override;
+  NodeT *deleteNode(NodeT *root, NodeT *node) override;
 
 public:
   AVLTree();
@@ -69,7 +71,7 @@ public:
   AVLTree &operator=(std::initializer_list<int> list) override;
 
   void insert(int key) override;
-  Node *search(int key) override;
+  NodeT *search(int key) override;
   void remove(int key) override;
 };
 
