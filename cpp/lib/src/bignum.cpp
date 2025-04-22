@@ -1,4 +1,4 @@
-#include "bignum.h"
+#include "bignum.hpp"
 
 BigInt::BigInt(const int n) {
   int input = n;

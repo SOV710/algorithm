@@ -2,8 +2,8 @@
 // Created by chris on 24-12-9.
 //
 
-#include "tree.h"
-#include "util.h"
+#include "tree.hpp"
+#include "util.hpp"
 
 namespace TREE {
 
